@@ -62,7 +62,7 @@ def my_function(company_name_list):
         word = word.replace(' ', '')
     return company_name_list
 
-
+# 计算编辑距离
 def compute(name1, name2):
     if len(name1) < len(name2):
         return compute(name2, name1)
@@ -114,19 +114,24 @@ d = []
 data = {}
 data1 = {}
 data2 = {}
+# 读取两个表格
 pd1 = pd.read_excel('./data/dict/task2.xlsx', '信息类一')
 pd2 = pd.read_excel('./data/dict/task2.xlsx', '信息类二')
+
+# 处理第一个表格
 for index in range(1, len(pd1)):
-    company_name = pd1.iloc[index, 0]
-    company_name3, company_name_list = main_extract(company_name, d_4_delete, stop_word, d_city_province)
-    a.append(company_name3)
-    data1[company_name3] = company_name
+    company_name = pd1.iloc[index, 0] # 第一列
+    company_name3, company_name_list = main_extract(company_name, d_4_delete, stop_word, d_city_province) # 经过上面的处理
+    a.append(company_name3) #处理之后的公司名存在a里
+    data1[company_name3] = company_name # 处理之后的公司名 : 处理之前的公司名 形成字典
+# 处理第二个表格 其他同上
 for index in range(1, len(pd2)):
     company_name2 = pd2.iloc[index, 0]
     company_name4, company_name_list2 = main_extract(company_name2, d_4_delete, stop_word, d_city_province)
     b.append(company_name4)
     data2[company_name4] = company_name2
 
+# 两个for循环对比每行，选出匹配度最高的两个分别存进c和d
 for name1 in a:
     max = 0
     maxname = ""
@@ -138,5 +143,6 @@ for name1 in a:
     data['col1'] = c.append(data1[name1])
     data['col2'] = d.append(data2[maxname])
 
+# 输出成csv文件
 df = pd.DataFrame({'col1': c, 'col2': d})
 df.to_csv('text.csv', na_rep='NA', columns=['col1','col2'])
