@@ -15,7 +15,8 @@ def edit_dis_similarity(str1, str2):
         for j in range(1, m+1):
             ele = 1 if str1[i-1] != str2[j-1] else 0
             dis[i][j] = min(dis[i-1][j]+1, dis[i][j-1]+1, dis[i-1][j-1]+ele)
-    return 1 / dis[n][m]
+    # bias设置为1防止分母为零的情况
+    return 1 / (dis[n][m] + 1)
 
 # 以交并比计算相似度
 # pattern取值single和redundancy 分别表示不考虑重复字和考虑重复字
